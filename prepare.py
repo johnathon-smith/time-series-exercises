@@ -4,6 +4,7 @@ import pandas as pd
 from datetime import timedelta, datetime
 # visualization
 import matplotlib.pyplot as plt
+import seaborn as sns
 
 #Plot the individual distributions
 def get_dists(df):
@@ -55,11 +56,11 @@ def prepare_energy_data(energy):
     get_dists(energy)
 
     #Add a month and a year column to dataframe
-    power['month'] = power.Date.dt.month
-    power['year'] = power.Date.dt.year
+    energy['month'] = energy.Date.dt.month
+    energy['year'] = energy.Date.dt.year
 
     #Set the Date column as the index
-    power = power.set_index('Date').sort_index()
+    energy = energy.set_index('Date').sort_index()
 
     """
     The Wind, Solar, and Wind+Solar columns are the amount of energy produced in GWh by those types. 
@@ -69,6 +70,8 @@ def prepare_energy_data(energy):
     """
 
     #Fill in any missing values
-    power.Wind.fillna(0, inplace = True)
-    power.Solar.fillna(0, inplace = True)
-    power['Wind+Solar'].fillna(power.Wind + power.Solar, inplace = True)
+    energy.Wind.fillna(0, inplace = True)
+    energy.Solar.fillna(0, inplace = True)
+    energy['Wind+Solar'].fillna(energy.Wind + energy.Solar, inplace = True)
+
+    return energy
